@@ -1,86 +1,73 @@
-"""
-CS 1101 Unit 7 Reading Assignment
-Demonstrates string methods, file modes, and basic file error handling.
-"""
-
-def clean_feedback():
-    """Clean a feedback string using string methods."""
-    feedback = " THE SPEAKER WAS GREAT but THE ROOM WAS COLD "
-    cleaned = feedback.strip().capitalize()
-    cleaned = cleaned.replace("The speaker", "The Presenter")
-    cleaned = cleaned.title()
-    print("Q1 - String Processing")
-    print("Cleaned feedback:", cleaned)
-    print()
+def clean_feedback(message):
+    s = message.strip().lower()
+    s = s.replace("speaker", "presenter")
+    s = " ".join(s.split())
+    return s.title()
 
 
-def manage_feedback_file():
-    """Write, read, and append feedback using file modes."""
-    feedback_items = [
-        "The workshop was informative.",
-        "The presenter was great.",
-        "The room was cold."
-    ]
+# Question 1
+raw_feedback = " THE SPEAKER WAS GREAT but THE ROOM WAS COLD "
+cleaned_feedback = clean_feedback(raw_feedback)
 
-    print("Q2 - File Handling")
+print(f"Cleaned feedback: {cleaned_feedback}")
 
-    # 'w' creates a file or replaces its existing contents.
-    with open("feedback.txt", "w", encoding="utf-8") as file:
-        for item in feedback_items:
-            file.write(item + "\n")
 
-    # 'r' opens a file for reading.
+# Question 2
+feedback_list = [
+    "The presenter was great.",
+    "The workshop was informative.",
+    "The room was comfortable."
+]
+
+with open("feedback.txt", "w", encoding="utf-8") as file:
+    for feedback in feedback_list:
+        file.write(feedback + "\n")
+
+print("\nInitial feedback:")
+with open("feedback.txt", "r", encoding="utf-8") as file:
+    for line in file:
+        print(line.strip())
+
+with open("feedback.txt", "a", encoding="utf-8") as file:
+    file.write("The examples were great.\n")
+
+print("\nUpdated feedback:")
+with open("feedback.txt", "r", encoding="utf-8") as file:
+    for line in file:
+        print(line.strip())
+
+
+# Question 3
+print("\nException handling:")
+try:
     with open("feedback.txt", "r", encoding="utf-8") as file:
-        print("Initial feedback:")
-        print(file.read(), end="")
-
-    # 'a' adds new content to the end of an existing file.
-    with open("feedback.txt", "a", encoding="utf-8") as file:
-        file.write("The examples were great.\n")
-
-    with open("feedback.txt", "r", encoding="utf-8") as file:
-        all_feedback = file.read().splitlines()
-
-    print("\nFeedback after appending:")
-    for item in all_feedback:
-        print(item)
-    print()
-    return all_feedback
+        for line in file:
+            print(line.strip())
+except FileNotFoundError:
+    print("File not found. Please create feedback.txt first.")
+except PermissionError:
+    print("Permission denied. Close the file and try again.")
+finally:
+    print("Operation completed.")
 
 
-def read_feedback_safely(filename):
-    """Show how common file errors can be handled."""
-    print("Q3 - File Error Handling")
-    try:
-        with open(filename, "r", encoding="utf-8") as file:
-            contents = file.read()
-            print(contents if contents else "(The file is empty.)")
-    except FileNotFoundError:
-        print(f"Error: '{filename}' was not found.")
-    except PermissionError:
-        print(f"Error: permission denied when opening '{filename}'.")
-    print()
+# Question 4
+with open("feedback.txt", "r", encoding="utf-8") as file:
+    feedback_lines = file.readlines()
 
+total_feedback = len(feedback_lines)
+great_mentions = sum(
+    1 for line in feedback_lines
+    if "great" in line.lower()
+)
 
-def create_summary(feedback_items):
-    """Write a summary file and count feedback containing 'great'."""
-    great_count = sum(1 for item in feedback_items if "great" in item.lower())
+summary = (
+    "=== Workshop Feedback Summary ===\n"
+    f"Total Feedback: {total_feedback}\n"
+    f"Mentions of 'Great': {great_mentions}\n"
+)
 
-    with open("summary.txt", "w", encoding="utf-8") as file:
-        file.write(f"Total Feedback: {len(feedback_items)}\n")
-        file.write(f"Mentions of 'Great': {great_count}\n")
+with open("summary.txt", "w", encoding="utf-8") as file:
+    file.write(summary)
 
-    print("Q4 - Feedback Summary")
-    print(f"Total Feedback: {len(feedback_items)}")
-    print(f"Mentions of 'Great': {great_count}")
-
-
-def main():
-    clean_feedback()
-    feedback_items = manage_feedback_file()
-    read_feedback_safely("feedback.txt")
-    create_summary(feedback_items)
-
-
-if __name__ == "__main__":
-    main()
+print("\n" + summary, end="")
