@@ -1,24 +1,23 @@
-Q1 - String Processing
 Cleaned feedback: The Presenter Was Great But The Room Was Cold
 
-Q2 - File Handling
 Initial feedback:
-The workshop was informative.
 The presenter was great.
-The room was cold.
+The workshop was informative.
+The room was comfortable.
 
-Feedback after appending:
-The workshop was informative.
+Updated feedback:
 The presenter was great.
-The room was cold.
+The workshop was informative.
+The room was comfortable.
 The examples were great.
 
-Q3 - File Error Handling
-The workshop was informative.
+Exception handling:
 The presenter was great.
-The room was cold.
+The workshop was informative.
+The room was comfortable.
 The examples were great.
+Operation completed.
 
-Q4 - Feedback Summary
+=== Workshop Feedback Summary ===
 Total Feedback: 4
 Mentions of 'Great': 2
